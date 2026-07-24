@@ -5,7 +5,6 @@ import { execSync } from 'child_process';
 
 const PROD_FLAG = '--configuration production';
 
-// Reads package.json and finds the best matching production build command
 function detectProdScript(pkgPath: string): { found: boolean; recommendation: string; existingKey?: string } {
   const raw = fs.readFileSync(pkgPath, 'utf-8');
   const pkg = JSON.parse(raw);
@@ -73,20 +72,34 @@ const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
 const scripts = pkg.scripts || {};
 const hasProd = Object.values(scripts).some(v => v.includes('--configuration production'));
 if (!hasProd) {
-  console.error('\\n⚠️  Angular Prod Guard Warning:');
-  console.error('   No production build script found in package.json!');
   const build = Object.entries(scripts).find(([k,v]) => k === 'build' && v.includes('ng build'))
              || Object.entries(scripts).find(([,v]) => v.includes('ng build'));
-  if (build) {
-    console.error('   Recommendation: Add to scripts:');
-    console.error('   \"build:prod\": \"' + build[1] + ' --configuration production\"');
-  } else {
-    console.error('   Recommendation: Add to scripts:');
-    console.error('   \"build:prod\": \"ng build --configuration production\"');
-  }
+  const recommended = build ? build[1] + ' --configuration production' : 'ng build --configuration production';
   console.error('');
+  console.error('\uD83D\uDEAB ================================================');
+  console.error('   PUSH BLOCKED by Angular Prod Guard');
+  console.error('================================================');
+  console.error('');
+  console.error('\u274C No production build script found in package.json!');
+  console.error('');
+  console.error('\u2705 Add this to your package.json scripts:');
+  console.error('');
+  console.error('   \"build:prod\": \"' + recommended + '\"');
+  console.error('');
+  console.error('\uD83D\uDCCB Steps to fix:');
+  console.error('   1. Open package.json');
+  console.error('   2. Add the script above');
+  console.error('   3. Run: npm run build:prod');
+  console.error('   4. Then git push again');
+  console.error('');
+  console.error('\uD83D\uDEAB ================================================');
+  console.error('');
+  process.exit(1);
 }
-" 2>&1 || true
+console.log('');
+console.log('\u2705 Angular Prod Guard: Production build script found. Push allowed!');
+console.log('');
+"
 `;
 
     // Only write if not already installed
