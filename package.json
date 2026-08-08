@@ -3,7 +3,7 @@
   "displayName": "Angular Prod Guard",
   "description": "Warns if production build script is missing in package.json before git push",
   "version": "0.0.1",
-  "publisher": "your-publisher-name",
+  "publisher": "omganeshganesh91",
   "repository": {
     "type": "git",
     "url": "https://github.com/<your-username>/angular-prod-guard"
