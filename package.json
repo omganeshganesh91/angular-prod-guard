@@ -6,7 +6,7 @@
   "publisher": "omganeshganesh91",
   "repository": {
     "type": "git",
-    "url": "https://github.com/<your-username>/angular-prod-guard"
+      "url": "https://github.com/omganeshganesh91/angular-prod-guard"
   },
   "engines": { "vscode": "^1.80.0" },
   "categories": ["Other"],
@@ -26,6 +26,7 @@
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+      "vscode:prepublish": "npm run compile",
     "package": "vsce package"
   },
   "devDependencies": {
